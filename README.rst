@@ -26,7 +26,7 @@ Quick start
   - Select "CREST Access" and select "characterLocationRead"
   - Set the "Callback URL" to "https://yourdomain.com/eve_sso/callback"
 
-5. Add SSO client settings to whsales/settings.py like this::
+5. Copy the example settings file, and add SSO client settings to whsales/settings.py like this::
 
     EVE_SSO_CLIENT_ID = "my client id"
     EVE_SSO_CLIENT_SECRET = "my client secret"
