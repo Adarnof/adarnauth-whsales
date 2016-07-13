@@ -1,0 +1,5 @@
+django>=1.9.1,<2.0
+git+https://github.com/adarnof/adarnauth-eve-sso
+django_extras
+requests
+django-bootstrap-form

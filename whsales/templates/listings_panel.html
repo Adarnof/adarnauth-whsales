@@ -1,0 +1,61 @@
+{% extends "page.html" %}
+{% load humanize %}
+{% block page-content %}
+    <div class="container-fluid">
+        {% for listing in page_obj.object_list %}
+            <div class="col-md-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">{{ listing.system }}</div>
+                    <table class="table">
+                        <tr>
+                            <th class="text-center">Class</th>
+                            <td class="text-center">{{ listing.system.wormhole_class }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Effect</th>
+                            <td class="text-center">{{ listing.system.effect }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Static{{ listing.system.statics.all.count|pluralize }}</th>
+                            <td class="text-center">
+                                {% for static in listing.system.statics.all %}
+                                    {{ static.name|add:" to "|add:static.destination }}
+                                    {% if listing.system.statics.all|length > 1 %}
+                                        {% autoescape off %}{% cycle '<br>' '' %}{% endautoescape %}
+                                    {% endif %}
+                                {% empty %}
+                                    None
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Posted</th>
+                            <td class="text-center">
+                                <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.created }}">
+                                    {{ listing.created|naturaltime }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Asking</th>
+                            <td class="text-center">
+                                <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.price|intcomma }} ISK">{{ listing.price|intword }}</a></td>
+                        </tr>
+                    </table>
+                    <div class="panel-footer text-center">
+                        <a class="btn btn-success" type="button" label="More Info" href="{% url 'listing_view' listing.pk %}">More Info</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-danger text-center">No listings found.</div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block extra_script %}
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+{% endblock %}

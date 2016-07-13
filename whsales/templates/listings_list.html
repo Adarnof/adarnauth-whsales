@@ -1,0 +1,42 @@
+{% extends "page.html" %}
+{% load humanize %}
+{% block page-content %}
+    <div class="container-fluid">
+        <div class="table-responsive">
+            {% if page_obj.object_list %}
+                <table class="table table-condensed table-hover table-striped">
+                    <tr>
+                        <th class="text-center">Posted</th>
+                        <th class="text-center">System</th>
+                        <th class="text-center">Class</th>
+                        <th class="text-center">Effect</th>
+                        <th class="text-center">Statics</th>
+                        <th class="text-center">Price</th>
+                        <th></th>
+                    </tr>
+                    {% for listing in page_obj.object_list %}
+                        <tr>
+                            <td class="text-center">{{ listing.created }}</td>
+                            <td class="text-center"><a href="https://evemaps.dotlan.net/system/{{ listing.system }}">{{ listing.system }}</a></td>
+                            <td class="text-center">{{ listing.system.wormhole_class }}</td>
+                            <td class="text-center">{{ listing.system.effect }}</td>
+                            <td class="text-center">
+                                {% for static in listing.system.statics.all %}
+                                    {{ static.name|add:" " }}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center"><a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.price|intcomma }} ISK">{{ listing.price|intword }}</a></td>
+                            <td class="text-center">
+                                <a class="btn btn-info" type="button" href="{% url 'listing_view' listing.pk %}" title="View">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </a>
+                            </td>
+                       </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <div class="alert alert-danger text-center">No listings found.</div>
+            {% endif %}
+       </div>
+    </div>
+{% endblock page-content %}
