@@ -24,11 +24,11 @@
             text-decoration: none;
         }
         .longtext {
-           -webkit-hyphens: auto;
-           -moz-hyphens: auto;
-           -ms-hyphens: auto;
-           hyphens: auto;
-           word-wrap: break-word;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            word-wrap: break-word;
         }
     </style>
 
@@ -58,6 +58,10 @@
                         <li><a href="{% url 'search' %}">Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                        {% endif %}
                         {% if user.is_authenticated %}
                             <li><a href="{% url 'logout' %}">Logout</a></li>
                         {% else %}

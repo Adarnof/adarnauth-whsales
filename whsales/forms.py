@@ -12,7 +12,7 @@ class ListingAddForm(forms.ModelForm):
     system_id = forms.CharField(max_length=10, widget=forms.HiddenInput())
 
 class ListingSearchForm(forms.Form):
-    wormhole_class = forms.IntegerField(min_value=1, max_value=16, required=False)
+    wormhole_class = forms.IntegerField(min_value=1, max_value=43, required=False)
     system_name = forms.CharField(max_length=10, required=False)
     effect = forms.ModelChoiceField(required=False, queryset=Effect.objects.all())
     statics = forms.ModelMultipleChoiceField(required=False, queryset=Wormhole.objects.all())

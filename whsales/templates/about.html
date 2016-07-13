@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="page-header text-center">Adarnauth Wormhole Sales</h1>
+    <div class="container-fluid">
+        <div class="row-eq-height">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Who made this?</div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="col-md-6">
+                                <img class="img-responsive center-block" alt="Adarnof" src="https://image.eveonline.com/Character/234899860_256.jpg">
+                            </div>
+                            <div class="col-md-6">
+                                <p>This site was created by <a href="http://evewho.com/pilot/Adarnof">Adarnof</a>, most famous for his work continuing <a href="https://forums.eveonline.com/default.aspx?g=posts&t=383030">Raynoldo Rivera's Alliance Auth</a> project.</p>
+                                <p>Born out of frustration with an older auth base, work began on a series of modular Django apps, the first of which powers this site.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">How does it work?</div>
+                    <div class="panel-body">
+                        <p>Using SSO tokens, the CREST endpoint for character location is accessed. Before a listing can be created, CREST is used to determine if the character is in a legal system to list for sale.</p>
+                        <p>Character location can <strong>only</strong> be determined while the character is in-game.</p>
+                        <p>Integration with SSO and CREST is performed using one app of the Adarnauth suite, <a href="https://github.com/adarnof/adarnauth-eve-sso">Adarnauth-EVE-SSO</a>, which will serve as a common backbone to all future work.</p>
+                        <p>The goal of this site is to act as a testing ground for future technologies - an area to prototype work with an active user base. By using this site, you're helping me develop. Thanks!</p>
+                    </div>
+               </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">How do I know I can trust you?</div>
+                    <div class="panel-body">
+                        <p>The same way you go about trusting anyone else in EVE - you don't!</p>
+                        <p>If you're concerned about security, you can revoke CREST access to your character's location at any time through the <a href="https://community.eveonline.com/support/third-party-applications/">EVE Community site</a> - just look for the entries labelled "Adarnauth Wormhole Sales" and press Delete.</p>
+                        <p>Full source code for this site can be found on my <a href="https://github.com/adarnof">Github repository.</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

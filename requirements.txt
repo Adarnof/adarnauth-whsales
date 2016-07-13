@@ -3,3 +3,4 @@ git+https://github.com/adarnof/adarnauth-eve-sso
 django_extras
 requests
 django-bootstrap-form
+django-bootstrap-pagination

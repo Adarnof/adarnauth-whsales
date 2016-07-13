@@ -4,8 +4,8 @@
     <div class="container-fluid">
         {% for listing in page_obj.object_list %}
             <div class="col-md-2">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">{{ listing.system }}</div>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4 class="text-center">{{ listing.system }}</h4></div>
                     <table class="table">
                         <tr>
                             <th class="text-center">Class</th>

@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^sold$', views.listings_sold, name='listings_sold'),
     url(r'^post$', views.post_listing, name='add_listing'),
     url(r'^search$', views.search, name='search'),
+    url(r'^about$', views.about, name='about'),
     url(r'^eve_sso/', include('eve_sso.urls')),
 ]
 

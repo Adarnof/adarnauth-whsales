@@ -127,3 +127,6 @@ def search(request):
     else:
         form = ListingSearchForm()
     return render(request, 'form.html', context={'form': form})
+
+def about(request):
+    return render(request, 'about.html')
