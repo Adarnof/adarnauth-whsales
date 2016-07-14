@@ -25,8 +25,10 @@ def get_page(model_list, per_page, page_num):
 def login_view(request, tokens):
     token = tokens[0]
     user = authenticate(token=token)
-    login(request, user)
-    return redirect(listings_panel)
+    if user.is_active:
+        login(request, user)
+        return redirect(listings_panel)
+    return render(request, 'error.html', context={'error':'Your account has been disabled.'})
 
 @login_required
 def logout_view(request):
