@@ -11,8 +11,12 @@ class ListingAddForm(forms.ModelForm):
     system_name = forms.CharField(max_length=10, disabled=True, required=False)
     system_id = forms.CharField(max_length=10, widget=forms.HiddenInput())
 
-class ListingSearchForm(forms.Form):
+try:
     MAX_CLASS = System.objects.order_by('-wormhole_class')[0].wormhole_class
+except:
+    MAX_CLASS = 1
+
+class ListingSearchForm(forms.Form):
 
     wormhole_class = forms.IntegerField(min_value=1, max_value=MAX_CLASS, required=False)
     system_name = forms.CharField(max_length=10, required=False)
