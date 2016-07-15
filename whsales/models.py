@@ -51,6 +51,7 @@ class System(models.Model):
     wormhole_class = models.PositiveIntegerField()
     effect = models.ForeignKey(Effect, blank=True, null=True, on_delete=models.SET_NULL)
     statics = models.ManyToManyField(Wormhole, blank=True)
+    shattered = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
         return self.name

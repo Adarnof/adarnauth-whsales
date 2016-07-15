@@ -121,6 +121,10 @@ def search(request):
                 qs = qs.filter(effect=form.cleaned_data['effect'])
             if form.cleaned_data['statics']:
                 qs = qs.filter(statics__in=form.cleaned_data['statics'])
+            if form.cleaned_data['shattered']:
+                qs = qs.filter(shattered=True)
+            else:
+                qs = qs.filter(shattered=False)
             listings = Listing.objects.filter(system__in=qs).order_by('-created')
             if not form.cleaned_data['include_sold']:
                 listings = listings.exclude(sold__isnull=False)

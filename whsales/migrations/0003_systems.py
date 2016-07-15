@@ -17,13 +17,14 @@ def read_csv(name, delimiter=","):
 def generate_systems(apps, schema_editor):
     System = apps.get_model('whsales', 'System')
     Effect = apps.get_model('whsales', 'Effect')
-    data = read_csv('systems.csv', delimiter=";")
+    data = read_csv('systems.csv')
     for s in data:
         print "Creating " + s['solarSystemName']
         clean_data = {}
         clean_data['id'] = int(s['solarSystemID'])
         clean_data['name'] = s['solarSystemName']
         clean_data['wormhole_class'] = int(s['class'])
+        clean_data['shattered'] = bool(s['shattered'])
         effect = s.pop('effect', None)
         if not effect:
             effect = "None"

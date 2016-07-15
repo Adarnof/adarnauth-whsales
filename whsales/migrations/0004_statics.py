@@ -17,7 +17,7 @@ def read_csv(name, delimiter=","):
 def assign_statics(apps, schema_editor):
     Wormhole = apps.get_model('whsales', 'Wormhole')
     System = apps.get_model('whsales', 'System')
-    data = read_csv('systems.csv', delimiter=';')
+    data = read_csv('systems.csv', delimiter=',')
     for s in data:
         system = System.objects.get(id=int(s['solarSystemID']))
         if s['static1']:

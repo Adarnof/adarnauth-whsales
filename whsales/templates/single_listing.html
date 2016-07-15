@@ -89,7 +89,7 @@
                         <th class="text-center">Price</th>
                         <td class="text-center">
                             <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.price|intcomma }} ISK">
-                                {{ listing.price|intword }}
+                                {{ listing.price|intword }} ISK
                             </a>
                         </td>
                     </tr>
@@ -113,11 +113,20 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Comments</div>
-                <div class="panel-body longtext">{{ listing.notes|linebreaks }}</div>
+        {% if listing.notes %}
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Comments</div>
+                    <div class="panel-body longtext">{{ listing.notes|linebreaks }}</div>
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock content %}
+{% block extra_script %}
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+{% endblock extra_script %}
