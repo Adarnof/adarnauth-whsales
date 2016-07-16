@@ -27,6 +27,7 @@ def login_view(request, tokens):
     user = authenticate(token=token)
     if user.is_active:
         login(request, user)
+        token.delete()
         return redirect(listings_panel)
     return render(request, 'error.html', context={'error':'Your account has been disabled.'})
 
@@ -81,7 +82,18 @@ def my_listings(request):
 
 @login_required
 @token_required(scopes=['characterLocationRead'])
-def post_listing(request, tokens):
+def select_token(request, tokens):
+    return render(request, 'tokens.html', context={'tokens': tokens})
+
+@login_required
+@token_required(new=True, scopes=['characterLocationRead'])
+def add_token(request, tokens):
+    return redirect(select_token)
+
+@login_required
+@token_required(scopes=['characterLocationRead'])
+def post_listing(request, tokens, token_pk):
+    token = get_object_or_404(tokens, pk=token_pk)
     if request.method == 'POST':
        form = ListingAddForm(request.POST)
        if form.is_valid():
@@ -92,10 +104,13 @@ def post_listing(request, tokens):
        else:
            return render(request, 'form.html', context={'form': form})
     else:
-        token = tokens.filter(character_id=request.user.character_id)[0]
         custom_headers = {'Authorization': 'Bearer ' + token.access_token}
         r = requests.get('https://crest-tq.eveonline.com/characters/%s/location/' % token.character_id, headers=custom_headers)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except:
+            token.delete()
+            return redirect(select_token)
         if r.json():
             system_id = r.json()['solarSystem']['id']
             try:
