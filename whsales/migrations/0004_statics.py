@@ -23,11 +23,9 @@ def assign_statics(apps, schema_editor):
         if s['static1']:
             static = Wormhole.objects.get(name=s['static1'])
             system.statics.add(static)
-            print "Assigning %s to %s" % (static.name, system.name)
         if s['static2']:
             static = Wormhole.objects.get(name=s['static2'])
             system.statics.add(static)
-            print "Assigning %s to %s" % (static.name, system.name)
 
 def remove_statics(apps, schema_editor):
     System = apps.get_model('whsales', 'System')

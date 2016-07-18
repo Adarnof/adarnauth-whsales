@@ -19,7 +19,6 @@ def generate_systems(apps, schema_editor):
     Effect = apps.get_model('whsales', 'Effect')
     data = read_csv('systems.csv')
     for s in data:
-        print "Creating " + s['solarSystemName']
         clean_data = {}
         clean_data['id'] = int(s['solarSystemID'])
         clean_data['name'] = s['solarSystemName']

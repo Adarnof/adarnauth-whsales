@@ -18,7 +18,6 @@ def generate_wormholes(apps, schema_editor):
     Wormhole = apps.get_model('whsales', 'Wormhole')
     data = read_csv('wormholes.csv')
     for w in data:
-        print "Creating " + w['name']
         clean_data = {}
         clean_data['lifetime'] = int(w['lifetime'])
         clean_data['jumpable'] = int(w['jumpable'])
