@@ -138,7 +138,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'singlecharcore.backends.TokenAuthenticationBackend',
 ]
-LOGIN_URL = 'login'
+LOGIN_URL = 'singlecharcore:login'
 LOGIN_REDIRECT_URL = 'listings_panel'
 
 # Edit below with EVE Application details
