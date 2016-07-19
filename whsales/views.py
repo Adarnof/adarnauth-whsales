@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django_extras.contrib.auth.shortcuts import get_owned_object_or_40x
 from eve_sso.decorators import token_required
-from whsales.models import User, Listing, System
+from whsales.models import Listing, System
 from whsales.forms import ListingAddForm, ListingSearchForm
 import requests
 

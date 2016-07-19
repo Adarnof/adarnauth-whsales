@@ -20,8 +20,6 @@ from whsales import views
 urlpatterns = [
     url(r'^$', views.listings_panel, name='listings_panel'),
     url(r'^admin/', admin.site.urls),
-    url(r'^login$', views.login_view, name='login'),
-    url(r'^logout$', views.logout_view, name='logout'),
     url(r'^list$', views.listings_list, name='listings_list'),
     url(r'^list/me$', views.my_listings, name='user_listings'),
     url(r'^listing/(\d*)$', views.listing_view, name='listing_view'),
@@ -33,6 +31,6 @@ urlpatterns = [
     url(r'^tokens/(\d*)/post$', views.post_listing, name='add_listing'),
     url(r'^search$', views.search, name='search'),
     url(r'^about$', views.about, name='about'),
-    url(r'^eve_sso/', include('eve_sso.urls')),
+    url(r'^core/', include('singlecharcore.urls')),
 ]
 

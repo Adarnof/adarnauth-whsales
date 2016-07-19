@@ -68,9 +68,9 @@
                             <li><a href="{% url 'admin:index' %}">Admin</a></li>
                         {% endif %}
                         {% if user.is_authenticated %}
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            <li><a href="{% url 'singlecharcore:logout' %}">Logout</a></li>
                         {% else %}
-                            <li><a href="{% url 'login' %}">Login</a></li>
+                            <li><a href="{% url 'singlecharcore:login' %}">Login</a></li>
                         {% endif %}
                     </ul>
                 </div>
