@@ -30,7 +30,7 @@ Quick start
 
     EVE_SSO_CLIENT_ID = "my client id"
     EVE_SSO_CLIENT_SECRET = "my client secret"
-    EVE_SSO_CALLBACK_URL = "my client callback url"
+    EVE_SSO_CALLBACK_URL = "mydomain.com/core/callback"
 
 6. Run `python manage.py migrate` to create the populate tables.
 
