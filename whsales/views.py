@@ -104,13 +104,17 @@ def post_listing(request, tokens, token_pk):
        else:
            return render(request, 'form.html', context={'form': form})
     else:
-        custom_headers = {'Authorization': 'Bearer ' + token.access_token}
+        try:
+            token.token
+        except TokenInvalidError:
+            token.delete()
+            return render(request, 'error.html', context={'error': 'Selected token is no longer valid.'})
+        custom_headers = {'Authorization': 'Bearer ' + token.token}
         r = requests.get('https://crest-tq.eveonline.com/characters/%s/location/' % token.character_id, headers=custom_headers)
         try:
             r.raise_for_status()
         except:
-            token.delete()
-            return redirect(select_token)
+            return render(request, 'error.html', context={'error': 'Failed to determine character location (%s)' % r.status_code})
         if r.json():
             system_id = r.json()['solarSystem']['id']
             try:

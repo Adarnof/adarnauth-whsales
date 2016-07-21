@@ -1,5 +1,5 @@
 name,lifetime,destination,mass,jumpable,regenerate
-A009,16,Class 13,500,20,FALSE
+A009,16,Class 13,500,5,FALSE
 A239,24,Low-Sec,2000,300,FALSE
 A641,16,Hi-Sec,2000,1000,FALSE
 A982,24,Class 6,3000,300,FALSE
