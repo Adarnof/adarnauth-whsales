@@ -1,8 +1,11 @@
 from django.contrib import admin
 from whsales.models import Listing, Wormhole, System, Effect
 
-admin.site.register(Listing)
 admin.site.register(Effect)
+
+@admin.register(Listing)
+class ListingAdmin(admin.ModelAdmin):
+    search_fields = ['system__name', 'owner__character_name']
 
 @admin.register(Wormhole)
 class WormholeAdmin(admin.ModelAdmin):
