@@ -19,7 +19,7 @@ except:
 class ListingSearchForm(forms.Form):
 
     wormhole_class = forms.IntegerField(min_value=1, max_value=MAX_CLASS, required=False)
-    system_name = forms.CharField(max_length=10, required=False)
+    system_name = forms.CharField(max_length=7, required=False)
     effect = forms.ModelChoiceField(required=False, queryset=Effect.objects.all())
     statics = forms.ModelMultipleChoiceField(required=False, queryset=Wormhole.objects.all())
     shattered = forms.BooleanField(required=False)
