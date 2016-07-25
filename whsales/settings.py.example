@@ -140,6 +140,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGIN_URL = 'singlecharcore:login'
 LOGIN_REDIRECT_URL = 'listings_panel'
+LOGIN_SCOPES = ['characterLocationRead']
 
 # Edit below with EVE Application details
 

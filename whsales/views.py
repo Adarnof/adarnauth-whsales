@@ -80,17 +80,14 @@ def my_listings(request):
     listings = get_page(all_listings, LISTINGS_PER_LIST_PAGE, page)
     return render(request, 'listings_list.html', context={'page_obj':listings})
 
-@login_required
 @token_required(scopes=['characterLocationRead'])
 def select_token(request, tokens):
     return render(request, 'tokens.html', context={'tokens': tokens})
 
-@login_required
 @token_required(new=True, scopes=['characterLocationRead'])
 def add_token(request, tokens):
     return redirect(select_token)
 
-@login_required
 @token_required(scopes=['characterLocationRead'])
 def post_listing(request, tokens, token_pk):
     token = get_object_or_404(tokens, pk=token_pk)
