@@ -80,49 +80,19 @@ def my_listings(request):
     listings = get_page(all_listings, LISTINGS_PER_LIST_PAGE, page)
     return render(request, 'listings_list.html', context={'page_obj':listings})
 
-@token_required(scopes=['characterLocationRead'])
-def select_token(request, tokens):
-    return render(request, 'tokens.html', context={'tokens': tokens})
-
-@token_required(new=True, scopes=['characterLocationRead'])
-def add_token(request, tokens):
-    return redirect(select_token)
-
-@token_required(scopes=['characterLocationRead'])
-def post_listing(request, tokens, token_pk):
-    token = get_object_or_404(tokens, pk=token_pk)
+@login_required
+def post_listing(request):
     if request.method == 'POST':
        form = ListingAddForm(request.POST)
        if form.is_valid():
            listing = form.save(commit=False)
            listing.owner = request.user
+           listing.system = System.objects.get(name=form.cleaned_data['system_name'])
            listing.save()
            return redirect(listing_view, listing.pk)
-       else:
-           return render(request, 'form.html', context={'form': form})
     else:
-        try:
-            token.token
-        except TokenInvalidError:
-            token.delete()
-            return render(request, 'error.html', context={'error': 'Selected token is no longer valid.'})
-        custom_headers = {'Authorization': 'Bearer ' + token.token}
-        r = requests.get('https://crest-tq.eveonline.com/characters/%s/location/' % token.character_id, headers=custom_headers)
-        try:
-            r.raise_for_status()
-        except:
-            return render(request, 'error.html', context={'error': 'Failed to determine character location (%s)' % r.status_code})
-        if r.json():
-            system_id = r.json()['solarSystem']['id']
-            try:
-                system = System.objects.get(id=system_id)
-                form = ListingAddForm(initial={'system_id':system.id,'system_name':system.name, 'system':system})
-                return render(request, 'form.html', context={'form': form})
-            except System.DoesNotExist:
-                error = "Your character is not in a recognized wormhole system."
-        else:
-            error = "Your character must be in-game to determine its location."
-        return render(request, 'error.html', context={'error': error})
+        form = ListingAddForm()
+    return render(request, 'form.html', context={'form': form})
 
 def search(request):
     if request.method == 'POST':

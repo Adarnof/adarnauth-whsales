@@ -4,12 +4,15 @@ from whsales.models import System, Listing, Wormhole, Effect
 class ListingAddForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ['system', 'price', 'notes']
-        widgets = {
-            'system': forms.HiddenInput()
-        }
-    system_name = forms.CharField(max_length=10, disabled=True, required=False)
-    system_id = forms.CharField(max_length=10, widget=forms.HiddenInput())
+        fields = ['price', 'notes']
+    system_name = forms.CharField(max_length=10, required=False)
+
+    def clean_system_name(self):
+        try:
+            system = System.objects.get(name=self.cleaned_data['system_name'])
+            return self.cleaned_data['system_name']
+        except System.DoesNotExist:
+            raise forms.ValidationError("Unrecognized wormhole system name.")
 
 try:
     MAX_CLASS = System.objects.order_by('-wormhole_class')[0].wormhole_class
