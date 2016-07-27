@@ -1,0 +1,77 @@
+{% extends "page.html" %}
+{% load humanize %}
+{% block page-content %}
+    <div class="container-fluid">
+        <div class="table-responsive">
+            {% if page_obj.object_list %}
+                <table class="table table-condensed table-hover table-striped">
+                    <tr>
+                        <th class="text-center">Posted</th>
+                        <th class="text-center">System</th>
+                        <th class="text-center">Class</th>
+                        <th class="text-center">Effect</th>
+                        <th class="text-center">Statics</th>
+                        <th class="text-center">Offering</th>
+                        <th></th>
+                    </tr>
+                    {% for wanted in page_obj.object_list %}
+                        <tr>
+                            <td class="text-center">{{ wanted.created }}</td>
+                            <td class="text-center">
+                                {% if wanted.system %}
+                                    <a href="https://evemaps.dotlan.net/system/{{ wanted.system }}">{{ wanted.system }}</a>
+                                {% else %}
+                                    Any
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if wanted.system %}
+                                    {{ wanted.system.wormhole_class }}
+                                {% elif wanted.wormhole_class %}
+                                    {{ wanted.wormhole_class }}
+                                {% else %}
+                                    Any
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if wanted.system %}
+                                    {{ wanted.system.effect }}
+                                {% elif wanted.effect.all.exists %}
+                                    {{ wanted.effect.all|join:", " }}
+                                {% else %}
+                                    Any
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if wanted.system %}
+                                    {{ wanted.system.statics.all|join:", " }}
+                                {% elif wanted.statics %}
+                                    {{ wanted.statics|join:", " }}
+                                {% else %}
+                                    Any
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.raw_offering|intcomma }} ISK">
+                                    {% autoescape off %}{{ wanted.fulfilled|yesno:"<strike>," }}{{ wanted.raw_offering|intword }} ISK{{ wanted.fulfilled|yesno:"</strike>," }}{% endautoescape %}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-success" type="button" href="{% url 'wanted_view' wanted.pk %}" title="View">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                </a>
+                            </td>
+                       </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <div class="alert alert-danger text-center">No listings found.</div>
+            {% endif %}
+       </div>
+    </div>
+{% endblock page-content %}
+{% block extra_script %}
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+{% endblock extra_script %}

@@ -162,3 +162,16 @@ def delete_wanted(request, pk):
     wanted = get_owned_object_or_40x(Wanted, request.user, pk=pk)
     wanted.delete()
     return redirect(wanted_panel)
+
+def wanted_list(request):
+    all_wanted = Wanted.objects.filter(fulfilled__isnull=True).order_by('-created')
+    page = request.GET.get('page', 1)
+    wanted = get_page(all_wanted, LISTINGS_PER_LIST_PAGE, page)
+    return render(request, 'wanted_list.html', context={'page_obj':wanted})
+
+@login_required
+def my_wanted(request):
+    all_wanted = Wanted.objects.owned_by(request.user).order_by('-created')
+    page = request.GET.get('page', 1)
+    wanted = get_page(all_wanted, LISTINGS_PER_LIST_PAGE, page)
+    return render(request, 'wanted_list.html', context={'page_obj':wanted})

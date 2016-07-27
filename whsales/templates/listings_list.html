@@ -20,12 +20,12 @@
                             <td class="text-center"><a href="https://evemaps.dotlan.net/system/{{ listing.system }}">{{ listing.system }}</a></td>
                             <td class="text-center">{{ listing.system.wormhole_class }}</td>
                             <td class="text-center">{{ listing.system.effect }}</td>
+                            <td class="text-center">{{ listing.system.statics.all|join:", " }}</td>
                             <td class="text-center">
-                                {% for static in listing.system.statics.all %}
-                                    {{ static.name|add:" " }}
-                                {% endfor %}
+                                <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.raw_price|intcomma }} ISK">
+                                    {% autoescape off %}{{ listing.sold|yesno:"<strike>," }}{{ listing.raw_price|intword }} ISK{{ listing.sold|yesno:"</strike>," }}{% endautoescape %}
+                                </a>
                             </td>
-                            <td class="text-center"><a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.raw_price|intcomma }} ISK">{{ listing.raw_price|intword }} ISK</a></td>
                             <td class="text-center">
                                 <a class="btn btn-success" type="button" href="{% url 'listing_view' listing.pk %}" title="View">
                                     <span class="glyphicon glyphicon-eye-open"></span>
@@ -40,3 +40,8 @@
        </div>
     </div>
 {% endblock page-content %}
+{% block extra_script %}
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+{% endblock extra_script %}
