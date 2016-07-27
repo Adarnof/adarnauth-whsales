@@ -50,3 +50,21 @@ class WantedAddForm(forms.ModelForm):
             return self.cleaned_data['system_name']
         except System.DoesNotExist:
              raise forms.ValidationError("Unrecognized wormhole system.")
+
+    def clean_wormhole_class(self):
+        if self.cleaned_data['wormhole_class']:
+            if self.cleaned_data['wormhole_class'] > 6 and self.cleaned_data['wormhole_class'] != 13:
+                raise forms.ValidationError("Invalid wormhole class.")
+        return self.cleaned_data['wormhole_class']
+
+    def clean_statics(self):
+        if self.cleaned_data['statics']:
+            if self.cleaned_data['wormhole_class']:
+                for s in self.cleaned_data['statics']:
+                    if not System.objects.filter(wormhole_class=self.cleaned_data['wormhole_class']).filter(statics__destination=s).exists():
+                        raise forms.ValidationError("Static %s not valid for Class %s wormholes." % (s, self.cleaned_data['wormhole_class']))
+            else:
+                for s in self.cleaned_data['statics']:
+                    if not System.objects.filter(statics__destination=s).exists():
+                        raise forms.ValidationError("No systems with static %s found." % s)
+        return self.cleaned_data['statics']
