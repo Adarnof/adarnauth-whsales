@@ -56,17 +56,17 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">For Sale <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sell Orders <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'listings_panel' %}">Newest</a></li>
-                                <li><a href="{% url 'add_listing' %}">Add a Listing</a></li>
+                                <li><a href="{% url 'add_listing' %}">Create Order</a></li>
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wanted <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Buy Orders <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'wanted_panel' %}">Newest</a></li>
-                                <li><a href="{% url 'add_wanted' %}">Add a Listing</a></li>
+                                <li><a href="{% url 'add_wanted' %}">Create Order</a></li>
                             </ul>
                         </li>
                         <li><a href="{% url 'search' %}">Search</a></li>
