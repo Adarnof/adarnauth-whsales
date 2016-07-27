@@ -58,7 +58,7 @@ class System(models.Model):
 class Listing(SingleOwnerMixin, models.Model):
     created = models.DateTimeField(auto_now_add=True)
     system = models.ForeignKey(System, on_delete=models.CASCADE)
-    price = models.PositiveIntegerField()
+    price = models.PositiveIntegerField(help_text="Million ISK")
     notes = models.TextField(blank=True, null=True)
 
     sold = models.DateTimeField(blank=True, null=True)
@@ -67,5 +67,37 @@ class Listing(SingleOwnerMixin, models.Model):
         self.sold = timezone.now()
         self.save()
 
+    @property
+    def raw_price(self):
+        return self.price * 1000000
+
     def __str__(self):
         return "%s - %s" % (self.owner, self.system)
+
+@python_2_unicode_compatible
+class Wanted(SingleOwnerMixin, models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    system = models.ForeignKey(System, blank=True, null=True)
+    wormhole_class = models.PositiveIntegerField(blank=True, null=True)
+    _statics = models.ManyToManyField(Wormhole, blank=True)
+    effect = models.ManyToManyField(Effect, blank=True)
+    shattered = models.BooleanField(default=False, blank=True)
+    offering = models.PositiveIntegerField(help_text="Million ISK")
+    notes = models.TextField(blank=True, null=True)
+
+    fulfilled = models.DateTimeField(blank=True, null=True)
+
+    def mark_fulfilled(self):
+        self.fulfilled = timezone.now()
+        self.save()
+
+    @property
+    def statics(self):
+        return list(set([s.destination for s in self._statics.all()]))
+
+    @property
+    def raw_offering(self):
+        return self.offering * 1000000
+
+    def __str__(self):
+        return "%s - %s" % (self.owner, self.created)

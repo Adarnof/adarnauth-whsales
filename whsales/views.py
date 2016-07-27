@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django_extras.contrib.auth.shortcuts import get_owned_object_or_40x
 from eve_sso.decorators import token_required
-from whsales.models import Listing, System
-from whsales.forms import ListingAddForm, ListingSearchForm
+from whsales.models import Listing, System, Wanted, Wormhole
+from whsales.forms import ListingAddForm, ListingSearchForm, WantedAddForm
 import requests
 
 LISTINGS_PER_PANEL_PAGE = 12
@@ -136,7 +136,7 @@ def search(request):
             if form.cleaned_data['effect']:
                 qs = qs.filter(effect=form.cleaned_data['effect'])
             if form.cleaned_data['statics']:
-                qs = qs.filter(statics__in=form.cleaned_data['statics'])
+                qs = qs.filter(statics__destination__in=form.cleaned_data['statics'])
             if form.cleaned_data['shattered']:
                 qs = qs.filter(shattered=True)
             else:
@@ -152,3 +152,43 @@ def search(request):
 
 def about(request):
     return render(request, 'about.html')
+
+@login_required
+def add_wanted(request):
+    if request.method == "POST":
+        form = WantedAddForm(request.POST)
+        if form.is_valid():
+            wanted = form.save(commit=False)
+            wanted.owner = request.user
+            if form.cleaned_data['system_name']:
+                wanted.system = System.objects.get(name=form.cleaned_data['system_name'])
+            wanted.save()
+            wanted._statics = Wormhole.objects.filter(destination__in=form.cleaned_data['statics'])
+            wanted.effect = form.cleaned_data['effect']
+            print form.cleaned_data['effect']
+            return redirect(wanted_view, wanted.pk)
+    else:
+        form = WantedAddForm()
+    return render(request, 'form.html', context={'form': form})
+
+def wanted_view(request, pk):
+    wanted = get_object_or_404(Wanted, pk=pk)
+    return render(request, 'single_wanted.html', context={'wanted': wanted})
+
+def wanted_panel(request):
+    all_wanted = Wanted.objects.filter(fulfilled__isnull=True).order_by('-created')
+    page = request.GET.get('page', 1)
+    wanted = get_page(all_wanted, LISTINGS_PER_PANEL_PAGE, page)
+    return render(request, 'wanted_panel.html', context={'page_obj':wanted})
+
+@login_required
+def fulfill_wanted(request, pk):
+    wanted = get_owned_object_or_40x(Wanted, request.user, pk=pk)
+    wanted.mark_fulfilled()
+    return redirect(wanted_view, pk)
+
+@login_required
+def delete_wanted(request, pk):
+    wanted = get_owned_object_or_40x(Wanted, request.user, pk=pk)
+    wanted.delete()
+    return redirect(wanted_panel)
