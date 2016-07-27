@@ -25,7 +25,7 @@
                                     {{ static.name|add:" " }}
                                 {% endfor %}
                             </td>
-                            <td class="text-center"><a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.price|intcomma }} ISK">{{ listing.price|intword }} ISK</a></td>
+                            <td class="text-center"><a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ listing.raw_price|intcomma }} ISK">{{ listing.raw_price|intword }} ISK</a></td>
                             <td class="text-center">
                                 <a class="btn btn-success" type="button" href="{% url 'listing_view' listing.pk %}" title="View">
                                     <span class="glyphicon glyphicon-eye-open"></span>
