@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+    <div class="container-fluid">
+        {% if wanted.system %}
+            <div class="col-med-12 text-center">
+                <h1>Wanted: {{ wanted.system }}</h1>
+            </div>
+            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">System</div>
+                    <table class="table">
+                        <tr>
+                            <th class="text-center">Class</th>
+                            <td class="text-center">
+                                {{ wanted.system.wormhole_class }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Effect</th>
+                            <td class="text-center">{{ wanted.system.effect }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <a class="label label-success" type="button" href="http://evemaps.dotlan.net/system/{{ wanted.system }}">Dotlan</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="label label-danger" type="button" href="https://zkillboard.com/system/{{ wanted.system.id }}">zKillboard</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <a class="label label-primary" type="button" href="http://eveplanets.com/eve/system/index/?show={{ wanted.system }}">EvePlanets</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="label label-warning" type="button" href="http://wh.pasta.gg/{{ wanted.system }}">Wormhol.es</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+           </div>
+            {% for static in wanted.system.statics.all %}
+                <div class="col-sm-4 col-md-3 col-lg-2">
+                 <div class="panel panel-default">
+                        <div class="panel-heading">Static {{ static.name }}</div>
+                        <table class="table">
+                            <tr>
+                                <th class="text-center">Destination</th>
+                                <td class="text-center">{{ static.destination }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Lifetime</th>
+                                <td class="text-center">{{ static.lifetime }} hours</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Total Mass</th>
+                                <td class="text-center">
+                                    <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ static.mass|intcomma|add:',000,000 kg'}}">
+                                        {{ static.mass|intcomma|add:",000 t" }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Jumpable</th>
+                                <td class="text-center">
+                                   <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ static.jumpable|intcomma|add:',000,000 kg'}}">
+                                        {{ static.jumpable|intcomma|add:",000 t" }}
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-med-12 text-center">
+                <h1>Wanted</h1>
+            </div>
+            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">System</div>
+                    <table class="table">
+                        <tr>
+                            <th class="text-center">Class</th>
+                            <td class="text-center">
+                                {% if wanted.wormhole_class %}
+                                    {{ wanted.wormhole_class }}
+                                {% else %}
+                                    Any
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Effect{{ wanted.effect.all.count|pluralize }}</th>
+                            <td class="text-center">
+                                {% if wanted.effecta.all.exists %}
+                                    {% autoescape off %}{{ wanted.effect.all|join:"<br>" }}{% endautoescape %}
+                                {% else %}
+                                    Any
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Statics</div>
+                    <table class="table">
+                        {% for static in wanted.statics %}
+                            <tr>
+                                <td class="text-center">{{ static }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr><td class="text-center">Any</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-sm-4 col-md-3 col-lg-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Listing</div>
+                <table class="table">
+                    <tr>
+                        <th class="text-center">Poster</th>
+                        <td class="text-center"><a href="https://evewho.com/pilot/{{ wanted.owner }}">{{ wanted.owner }}</a></td>
+                    </tr>
+                     <tr>
+                        <th class="text-center">Listed</th>
+                        <td class="text-center">
+                            <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.created }}">
+                                {{ wanted.created|naturaltime }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Price</th>
+                        <td class="text-center">
+                            <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.raw_offering|intcomma }} ISK">
+                                {{ wanted.raw_offering|intword }} ISK
+                            </a>
+                        </td>
+                    </tr>
+                    {% if wanted.fulfilled %}
+                        <tr>
+                            <th class="text-center">Fulfilled</th>
+                            <td class="text-center">
+                                <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.fulfilled }}">
+                                    {{ wanted.fulfilled|naturaltime }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        {% if wanted.owner == request.user %}
+                            <tr>
+                                <td class="text-center">
+                                    <a class="label label-success" type="button" href="{% url 'mark_fulfilled' wanted.pk %}">Mark Fulfilled</a>
+                                </td>
+                                <td class="text-center">
+                                    <a class="label label-danger" type="button" href="{% url 'delete_wanted' wanted.pk %}">Delete</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        {% if wanted.notes %}
+            <div class="col-md-12 col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Comments</div>
+                    <div class="panel-body longtext">{{ wanted.notes|linebreaks }}</div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+{% block extra_script %}
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+{% endblock extra_script %}

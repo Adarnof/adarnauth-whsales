@@ -1,0 +1,102 @@
+{% extends "page.html" %}
+{% load humanize %}
+{% block page-content %}
+    <div class="container-fluid">
+        {% for wanted in page_obj.object_list %}
+            <div class="col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    {% if wanted.system %}
+                        <div class="panel-heading"><h4 class="text-center">{{ wanted.system }}</h4></div>
+                        <table class="table">
+                            <tr>
+                                <th class="text-center">Class</th>
+                                <td class="text-center">{{ wanted.system.wormhole_class }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Effect</th>
+                                <td class="text-center">{{ wanted.system.effect }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Static{{ wanted.system.statics.all.count|pluralize }}</th>
+                                <td class="text-center">
+                                    {% for static in wanted.system.statics.all %}
+                                        {{ static.name|add:" to "|add:static.destination }}
+                                        {% if wanted.system.statics.all|length > 1 %}
+                                            {% autoescape off %}{% cycle '<br>' '' %}{% endautoescape %}
+                                        {% endif %}
+                                    {% empty %}
+                                        None
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Posted</th>
+                                <td class="text-center">
+                                    <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.created }}">
+                                        {{ wanted.created|naturaltime }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Offering</th>
+                                <td class="text-center">
+                                    <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.raw_offering|intcomma }} ISK">{{ wanted.raw_offering|intword }} ISK</a>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="panel-footer text-center">
+                            <a class="btn btn-success" type="button" label="More Info" href="{% url 'wanted_view' wanted.pk %}">More Info</a>
+                        </div>
+                    {% else %}
+                        <div class="panel-heading"><h4 class="text-center">Any {{ wanted.shattered|yesno:"Shattered ," }}{% if wanted.wormhole_class %}Class {{ wanted.wormhole_class }}{% endif %}</h4></div>
+                        <table class="table">
+                            <tr>
+                                <th class="text-center">Effect{{ wanted.effect.all.count|pluralize }}</th>
+                                <td class="text-center">
+                                    {% if wanted.effect.all.exists %}
+                                        {% autoescape off %}{{ wanted.effect.all|join:"<br>" }}{% endautoescape %}
+                                    {% else %}
+                                        Any
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Static{{ wanted.statics.count|pluralize }}</th>
+                                <td class="text-center">
+                                    {% for static in wanted.statics %}
+                                        {{ static }}<br>
+                                    {% empty %}
+                                        Any
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Posted</th>
+                                <td class="text-center">
+                                    <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.created }}">
+                                        {{ wanted.created|naturaltime }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Offering</th>
+                                <td class="text-center">
+                                    <a class="nodecoration" href="#" data-toggle="tooltip" data-placement="top" title="{{ wanted.raw_offering|intcomma }} ISK">{{ wanted.raw_offering|intword }} ISK</a></td>
+                            </tr>
+                        </table>
+                        <div class="panel-footer text-center">
+                            <a class="btn btn-success" type="button" label="More Info" href="{% url 'wanted_view' wanted.pk %}">More Info</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-danger text-center">No listings found.</div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block extra_script %}
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+{% endblock %}

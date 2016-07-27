@@ -1,6 +1,7 @@
 from django.contrib import admin
-from whsales.models import Listing, Wormhole, System, Effect
+from whsales.models import Listing, Wormhole, System, Effect, Wanted
 
+admin.site.register(Wanted)
 admin.site.register(Effect)
 
 @admin.register(Listing)

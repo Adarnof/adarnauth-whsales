@@ -29,6 +29,11 @@ urlpatterns = [
     url(r'^post$', views.post_listing, name='add_listing'),
     url(r'^search$', views.search, name='search'),
     url(r'^about$', views.about, name='about'),
+    url(r'^wanted$', views.wanted_panel, name='wanted_panel'),
+    url(r'^wanted/add$', views.add_wanted, name='add_wanted'),
+    url(r'^wanted/(\d*)$', views.wanted_view, name='wanted_view'),
+    url(r'^wanted/(\d*)/fulfill$', views.fulfill_wanted, name='mark_fulfilled'),
+    url(r'^wanted/(\d*)/delete$', views.delete_wanted, name='delete_wanted'),
     url(r'^core/', include('singlecharcore.urls')),
 ]
 
