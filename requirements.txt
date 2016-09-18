@@ -1,4 +1,4 @@
-django>=1.9.1,<2.0
+django>=1.10,<2.0
 git+https://github.com/adarnof/adarnauth-eve-sso
 django_extras
 requests

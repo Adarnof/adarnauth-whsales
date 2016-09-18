@@ -18,10 +18,9 @@ from django.contrib import admin
 from whsales import views
 
 urlpatterns = [
-    url(r'^$', views.listings_panel, name='listings_panel'),
+    url(r'^$', views.listings_list, name='listings_panel'),
     url(r'^admin/', admin.site.urls),
-    url(r'^list$', views.listings_list, name='listings_list'),
-    url(r'^list/me$', views.my_listings, name='user_listings'),
+    url(r'^me$', views.my_listings, name='user_listings'),
     url(r'^listing/(\d*)$', views.listing_view, name='listing_view'),
     url(r'^listing/(\d*)/sell$', views.mark_sold, name='mark_sold'),
     url(r'^listing/(\d*)/delete$', views.delete_listing, name='delete_listing'),
@@ -29,10 +28,9 @@ urlpatterns = [
     url(r'^post$', views.post_listing, name='add_listing'),
     url(r'^search$', views.search, name='search'),
     url(r'^about$', views.about, name='about'),
-    url(r'^wanted$', views.wanted_panel, name='wanted_panel'),
+    url(r'^wanted$', views.wanted_list, name='wanted_panel'),
     url(r'^wanted/add$', views.add_wanted, name='add_wanted'),
-    url(r'^wanted/list$', views.wanted_list, name='wanted_list'),
-    url(r'^wanted/list/me$', views.my_wanted, name='user_wanted'),
+    url(r'^wanted/me$', views.my_wanted, name='user_wanted'),
     url(r'^wanted/(\d*)$', views.wanted_view, name='wanted_view'),
     url(r'^wanted/(\d*)/fulfill$', views.fulfill_wanted, name='mark_fulfilled'),
     url(r'^wanted/(\d*)/delete$', views.delete_wanted, name='delete_wanted'),
